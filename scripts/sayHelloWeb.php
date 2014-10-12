@@ -5,12 +5,17 @@
 	$json_in = $_REQUEST['json'];
 
 
-	function twoPackages($bud, $dur) {
-  		$twopac = false;
-  		if($bud > 50 && $dur > 2){
-  			$twopac = true;
-  		}
-  		return $twopac;
+	function twoPackages($p_arr, $b){
+  		$first_random_package = pickFirst($p_arr, $b);
+  		//print("awesome");
+  		//print($p_arr[$first_random_package]);
+  		//print("<br />");
+  		$new_budget = $b-$p_arr[$first_random_package];
+  		//print("b:". $b . "v new budget" . $new_budget);
+  		unset($p_arr[$first_random_package]);
+  		//$new_budget = $budget - $output['package'][$first_random_package]['price'];
+  		$last_random_package = pickLast($p_arr, $new_budget);
+  		echo ($first_random_package . " " . $last_random_package);
 	}
 
 	function pickLast($trunc_sorted_price_arr, $budg){
@@ -34,7 +39,7 @@
 			//pick random from trunc price list
 			$second_package = array_rand($retrunc_sorted_price_arr);	
 		}
-		print("test: " . $second_package);
+		//print("test: " . $second_package);
 		return $second_package;
 	}
 
@@ -95,36 +100,8 @@
 			echo "<br />";
 			print_r($price_arr);
 			echo "<br />";
-//FIRST PICK
-			$first_random_package = pickFirst($price_arr, $budget);		
-			echo $first_random_package;
-			echo "<br />";
-
-//END FIRST PICK
-
-			//remove $first_package from price array
-			unset($price_arr[$first_random_package]);
-			print_r($price_arr);
-			echo "<br />";
-
-			//get new budget
-			$new_budget = $budget - $output['package'][$first_random_package]['price'];
-			echo $new_budget;
-			echo "<br />";
-
-//SECOND PICK
-		
-			$last_random_package = pickLast($price_arr, $new_budget);
-			echo $last_random_package;
-			echo "<br />";
-//END SECOND PICK
-			
-			echo "the two final packages are:";
-			echo ($first_random_package . " " . $last_random_package);
-
-
-
-
+//TWO PACKAGES
+			twoPackages($price_arr, $budget);
 
 			?> </h1>
 			
