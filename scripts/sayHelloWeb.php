@@ -13,7 +13,26 @@
   		return $twopac;
 	}
 
-	function pickOne()
+	function pickOne($trunc_sorted_price_arr, $budg){
+		$retrunc_sorted_price_arr = array();
+		foreach ($trunc_sorted_price_arr as $key => $value){
+			if($budg>=$value && $value >= (.7 * $budg)){
+				$retrunc_sorted_price_arr[$key] = $value;
+			}
+		}
+		$second_package = array_rand($retrunc_sorted_price_arr);
+		if($second_package == null){
+
+			foreach ($trunc_sorted_price_arr as $key => $value){
+				if($budg>=$value){
+					$retrunc_sorted_price_arr[$key] = $value;
+				}
+			}
+			$second_package = array_rand($retrunc_sorted_price_arr);	
+		}
+		print("test: " . $second_package);
+		return $second_package;
+	}
 
 	function getPackages($numpacks, $json_file, $budget){
 		$json = json_decode($json_file);
@@ -85,26 +104,13 @@
 			echo $new_budget;
 			echo "<br />";
 //PICK ONE FUNCTION
-			//re-truncate the truncated array for the lower budget
-			//The random value should be within 70% of left over budget
-			foreach ($truncated_arr as $key => $value){
-				if($new_budget>=$value && $value >= (.7 * $new_budget)){
-					$retruncated_arr[$key] = $value;
-				}
-			}
-
-			print_r($retruncated_arr);
-			echo "<br />";
-
-
-			//pull a second random value
-			//This random value should be within 70% of left over budget
-			$second_package = array_rand($truncated_arr);
-			echo $second_package;
+		
+			$last_package = pickOne($truncated_arr, $new_budget);
+			echo $last_package;
 			echo "<br />";
 //END PICK ONE FUNCTION
 			echo "the two final packages are:";
-			echo ($first_package . " " . $second_package);
+			echo ($first_package . " " . $last_package);
 
 
 
