@@ -5,17 +5,30 @@
 	$json_in = $_REQUEST['json'];
 
 
+	function checkNumPackages($bud, $dur) {
+		//true means 2 packages, false means 1 package
+		$twopac = false;
+  			if($bud > 50 && $dur > 2){
+  				$twopac = true;
+  			}
+  		return $twopac;
+	}
+
 	function twoPackages($p_arr, $b){
+  		$package_arr = array();
   		$first_random_package = pickFirst($p_arr, $b);
+  		
+  		$package_arr[0] = $first_random_package;
   		//print("awesome");
   		//print($p_arr[$first_random_package]);
   		//print("<br />");
   		$new_budget = $b-$p_arr[$first_random_package];
-  		//print("b:". $b . "v new budget" . $new_budget);
+  		print("b:". $b . "v new budget" . $new_budget);
   		unset($p_arr[$first_random_package]);
   		//$new_budget = $budget - $output['package'][$first_random_package]['price'];
   		$last_random_package = pickLast($p_arr, $new_budget);
-  		echo ($first_random_package . " " . $last_random_package);
+  		$package_arr[1] = $last_random_package;
+  		return $package_arr;
 	}
 
 	function pickLast($trunc_sorted_price_arr, $budg){
@@ -70,6 +83,8 @@
 		<div id="content">
 			<h1><?php 
 
+			//inputs
+
 			/*printf($budget);
 			printf("<br />");
 			printf($duration);
@@ -100,8 +115,21 @@
 			echo "<br />";
 			print_r($price_arr);
 			echo "<br />";
-//TWO PACKAGES
-			twoPackages($price_arr, $budget);
+
+			$pack_arr = array();
+			if($budget > 50 && $duration > 2){
+				//if true run two packages run
+  				$pack_arr = twoPackages($price_arr, $budget);
+  			} else {
+  				//run one package
+  				$pack_arr[0] = pickLast($price_arr, $budget);	
+  			}
+  			print_r($pack_arr);
+
+//if one package run
+			
+
+			
 
 			?> </h1>
 			
