@@ -13,14 +13,17 @@
   		return $twopac;
 	}
 
-	function pickOne($trunc_sorted_price_arr, $budg){
+	function pickLast($trunc_sorted_price_arr, $budg){
 		$retrunc_sorted_price_arr = array();
+		//truncate to get only prices near budget
 		foreach ($trunc_sorted_price_arr as $key => $value){
 			if($budg>=$value && $value >= (.7 * $budg)){
 				$retrunc_sorted_price_arr[$key] = $value;
 			}
 		}
+		//pick random from trunc 100%-70% price list
 		$second_package = array_rand($retrunc_sorted_price_arr);
+		//if can't find near budget truncate to find any price below budget
 		if($second_package == null){
 
 			foreach ($trunc_sorted_price_arr as $key => $value){
@@ -28,10 +31,24 @@
 					$retrunc_sorted_price_arr[$key] = $value;
 				}
 			}
+			//pick random from trunc price list
 			$second_package = array_rand($retrunc_sorted_price_arr);	
 		}
 		print("test: " . $second_package);
 		return $second_package;
+	}
+
+	function pickFirst($sorted_price_arr, $budge){
+		$truncate_sorted_price_arr = array();
+		//truncate sorted price array
+			foreach ($sorted_price_arr as $key => $value){
+				if($budge>=$value){
+					$truncate_sorted_price_arr[$key] = $value;
+				}
+			}
+			//random value from truncated and sorted price array
+			$first_package = array_rand($truncate_sorted_price_arr);
+			return $first_package;
 	}
 
 	function getPackages($numpacks, $json_file, $budget){
@@ -78,39 +95,32 @@
 			echo "<br />";
 			print_r($price_arr);
 			echo "<br />";
-
-			//truncate  sorted price array
-			foreach ($price_arr as $key => $value){
-				if($budget>=$value){
-					$truncated_arr[$key] = $value;
-				}
-			}
-
-			print_r($truncated_arr);
+//FIRST PICK
+			$first_random_package = pickFirst($price_arr, $budget);		
+			echo $first_random_package;
 			echo "<br />";
 
-			//random value from truncated and sorted price array
-			$first_package = array_rand($truncated_arr);
-			echo $first_package;
-			echo "<br />";
+//END FIRST PICK
 
-			//remove $first_package from truncated and sorted price array
-			unset($truncated_arr[$first_package]);
-			print_r($truncated_arr);
+			//remove $first_package from price array
+			unset($price_arr[$first_random_package]);
+			print_r($price_arr);
 			echo "<br />";
 
 			//get new budget
-			$new_budget = $budget - $output['package'][$first_package]['price'];
+			$new_budget = $budget - $output['package'][$first_random_package]['price'];
 			echo $new_budget;
 			echo "<br />";
-//PICK ONE FUNCTION
+
+//SECOND PICK
 		
-			$last_package = pickOne($truncated_arr, $new_budget);
-			echo $last_package;
+			$last_random_package = pickLast($price_arr, $new_budget);
+			echo $last_random_package;
 			echo "<br />";
-//END PICK ONE FUNCTION
+//END SECOND PICK
+			
 			echo "the two final packages are:";
-			echo ($first_package . " " . $last_package);
+			echo ($first_random_package . " " . $last_random_package);
 
 
 
