@@ -1,0 +1,72 @@
+<html>
+	<head>
+	</head>
+
+	<body>
+		<div id="header"><h1>Data In</h1></div>
+		<div id="content">
+			<h1>Input JSON</h1>
+
+			<form action="scripts/sayHelloWeb.php" method = "POST">
+
+				<label for="budget">Budget:</label>
+				<input type="text" name="budget" size = "20" /><br />
+				<label for="duration">Duration:</label>
+				<input type="text" name="duration" size = "20" /><br />
+
+				
+					<textarea id="json_text" name="json" cols="65" rows="8">
+					</textarea>
+					<br />
+				
+				
+					<input type="submit" value="parse JSON" />
+				
+			</form>
+
+						<p>
+				{
+  "package": [
+    {
+      "eventName": "John",
+      "category": "Doe",
+      "subCategory": "Doe",
+      "price": "value",
+      "image": "value",
+      "time": "value",
+      "location": "value",
+      "metadata": {
+        "key1": "value",
+        "key2": "value",
+        "key3": "value",
+        "key4": "value",
+        "key5": "value",
+        "key6": "value"
+      }
+    },
+    {
+      "eventName": "John",
+      "category": "Doe",
+      "subCategory": "Doe",
+      "price": "value",
+      "image": "value",
+      "time": "value",
+      "location": "value",
+      "metadata": {
+        "key1": "value",
+        "key2": "value",
+        "key3": "value",
+        "key4": "value",
+        "key5": "value",
+        "key6": "value"
+      }
+    }
+  ]
+}
+			</p>
+		</div>
+		<div id="footer"></div>
+	</body>
+</html>
+
+
